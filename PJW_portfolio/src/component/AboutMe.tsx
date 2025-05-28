@@ -1,5 +1,4 @@
 import { User, Calendar, GraduationCap, BookOpen, MapPin, Mail } from "lucide-react";
-import profile from "/profile.jpg";
 
 export default function AboutMe() {
 
@@ -11,7 +10,7 @@ export default function AboutMe() {
         <div className="flex justify-center items-center h-full">
           <div className="avatar">
             <div className="w-40 h-48 rounded-xs ring-offset-2 bg-base-200 flex items-center justify-center">
-              <img src={profile} alt="profile" />
+              <img src="/profile.jpg" alt="profile" />
               <span className="text-gray-400">사진</span>
             </div>
           </div>
