@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const menuItems = [
   { name: "About Me", href: "#about" },
@@ -9,40 +9,90 @@ const menuItems = [
 
 export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
+      if (window.innerWidth >= 1024) {
+        setIsDrawerOpen(false);
+      }
     };
+
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const moveToSection = (href: string) => {
+    const targetId = href.replace("#", "");
+    if (!targetId) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    const targetElement = document.getElementById(targetId);
+    if (!targetElement) return;
+
+    const headerHeight = headerRef.current?.offsetHeight ?? 0;
+    const targetTop = targetElement.getBoundingClientRect().top + window.scrollY;
+
+    window.scrollTo({
+      top: Math.max(0, targetTop - headerHeight - 12),
+      behavior: "smooth",
+    });
+  };
+
+  const handleMenuClick = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    event.preventDefault();
+    moveToSection(href);
+    if (isMobile) {
+      setIsDrawerOpen(false);
+    }
+  };
+
   return (
-    <header className="navbar bg-base-100 shadow-md fixed top-0 left-0 w-full z-50 text-grey-700">
+    <header
+      ref={headerRef}
+      className="navbar bg-base-100 shadow-md fixed top-0 left-0 w-full z-50 text-grey-700"
+    >
       <div className="navbar-start">
-        <a className="text-2xl font-extrabold tracking-widest" href="#">
+        <a
+          className="text-2xl font-extrabold tracking-widest"
+          href="#"
+          onClick={(event) => handleMenuClick(event, "#")}
+        >
           PyeonJW
         </a>
       </div>
+
       {/* 데스크탑 메뉴 */}
       {!isMobile && (
         <div className="navbar-end">
           <ul className="menu menu-horizontal px-1">
             {menuItems.map((item) => (
               <li key={item.name}>
-                <a href={item.href} className="font-semibold">{item.name}</a>
+                <a
+                  href={item.href}
+                  className="font-semibold"
+                  onClick={(event) => handleMenuClick(event, item.href)}
+                >
+                  {item.name}
+                </a>
               </li>
             ))}
           </ul>
         </div>
       )}
-      
+
       {/* 모바일 메뉴 */}
       {isMobile && (
         <div className="navbar-end">
-          <label htmlFor="drawer-menu" className="btn btn-ghost">
+          <label htmlFor="drawer-menu" className="btn btn-ghost" aria-label="메뉴 열기">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -50,16 +100,33 @@ export default function Header() {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </label>
-          <input id="drawer-menu" type="checkbox" className="drawer-toggle" />
+          <input
+            id="drawer-menu"
+            type="checkbox"
+            className="drawer-toggle"
+            checked={isDrawerOpen}
+            onChange={(event) => setIsDrawerOpen(event.target.checked)}
+          />
           <div className="drawer-side z-50">
             <label htmlFor="drawer-menu" className="drawer-overlay"></label>
             <ul className="menu p-4 w-64 min-h-full bg-base-100 text-base-content">
               {menuItems.map((item) => (
                 <li key={item.name}>
-                  <a href={item.href} className="font-semibold">{item.name}</a>
+                  <a
+                    href={item.href}
+                    className="font-semibold"
+                    onClick={(event) => handleMenuClick(event, item.href)}
+                  >
+                    {item.name}
+                  </a>
                 </li>
               ))}
             </ul>
