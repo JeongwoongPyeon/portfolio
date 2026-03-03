@@ -88,34 +88,29 @@ const Review = () => {
       {!showFlip && (
         <div className="w-full min-h-screen pt-24 pb-8 px-4 sm:px-6 flex flex-col items-center">
           <div className="w-full max-w-6xl">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4">
-              {/* 상단 타이틀 */}
-              <div className="flex flex-col items-center sm:items-start justify-center gap-2 text-center sm:text-left">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
-                  <div ref={titleCarouselRef} className="carousel w-72 sm:w-80 h-14 sm:h-16">
-                    {reviews.map((review, index) => (
-                      <div
-                        key={review.role}
-                        id={`title-slide${index + 1}`}
-                        className="carousel-item w-full flex items-center justify-center sm:justify-start"
-                      >
-                        <span>{Job[review.role as keyof typeof Job]}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <span>는 저를 이렇게 생각했습니다</span>
+            {/* 상단 타이틀 */}
+            <div className="flex flex-col items-center justify-center gap-2 pb-4 text-center">
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
+                <div ref={titleCarouselRef} className="carousel w-72 sm:w-80 h-14 sm:h-16">
+                  {reviews.map((review, index) => (
+                    <div
+                      key={review.role}
+                      id={`title-slide${index + 1}`}
+                      className="carousel-item w-full flex items-center justify-center"
+                    >
+                      <span>{Job[review.role as keyof typeof Job]}</span>
+                    </div>
+                  ))}
                 </div>
+                <span>는 저를 이렇게 생각했습니다</span>
               </div>
+            </div>
 
-              {/* 돌아가기 버튼 */}
-              <div className="flex justify-center sm:justify-end">
-                <button
-                  className="btn btn-md sm:btn-lg bg-slate-900 text-white border-slate-900 hover:bg-slate-800 hover:border-slate-800 font-bold shadow-md hover:shadow-lg"
-                  onClick={goBack}
-                >
-                  ← 포트폴리오로 돌아가기
-                </button>
-              </div>
+            {/* 돌아가기 버튼 */}
+            <div className="flex justify-center w-full py-4">
+              <button className="btn btn-neutral btn-lg text-white" onClick={goBack}>
+                ← 돌아가기
+              </button>
             </div>
           </div>
 
