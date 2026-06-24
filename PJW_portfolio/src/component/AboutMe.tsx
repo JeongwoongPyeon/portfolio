@@ -1,76 +1,77 @@
-import { User, Calendar, GraduationCap, BookOpen, MapPin, Mail } from "lucide-react";
+import {
+  BookOpen,
+  Calendar,
+  GraduationCap,
+  Mail,
+  MapPin,
+  User,
+} from "lucide-react";
+
+const profileItems = [
+  {
+    icon: User,
+    label: "이름",
+    value: "편정웅",
+  },
+  {
+    icon: Calendar,
+    label: "생년월일",
+    value: "1999. 04. 13",
+  },
+  {
+    icon: GraduationCap,
+    label: "학력",
+    value: "성균관대학교 데이터사이언스학과 학사",
+    caption: "2018. 03 - 2024. 08",
+  },
+  {
+    icon: BookOpen,
+    label: "교육사항",
+    value: "삼성청년SW아카데미 12기 수료",
+    caption: "2024. 06 - 2025. 06",
+  },
+  {
+    icon: MapPin,
+    label: "위치",
+    value: "서울특별시 광진구 / 충청남도 아산시",
+  },
+  {
+    icon: Mail,
+    label: "Contact",
+    value: "like5518@gmail.com",
+  },
+];
 
 export default function AboutMe() {
   return (
-    <section className="w-full max-w-5xl mt-16 px-4 sm:px-6">
-      <h2 className="text-3xl sm:text-4xl font-extrabold mb-8 text-left">About Me</h2>
+    <section className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-8 lg:px-10">
+      <div className="mb-9 text-left">
+        <p className="text-sm font-extrabold uppercase tracking-[0.28em] text-emerald-600">
+          About Me
+        </p>
+        <h2 className="mt-3 text-3xl font-extrabold text-slate-950 sm:text-4xl">
+          성실하게 쌓아온 기본기
+        </h2>
+      </div>
 
-      <div className="rounded-3xl border border-base-300 bg-base-100/80 backdrop-blur-sm p-6 sm:p-8 shadow-lg">
-        <div className="flex flex-col lg:flex-row gap-8 lg:items-stretch">
-          {/* 프로필 아바타 */}
-          <div className="flex justify-center lg:justify-start items-start">
-            <div className="w-44 sm:w-52 aspect-[4/5] rounded-2xl overflow-hidden border border-base-300 shadow-md bg-base-200">
-              <img src="/Profile.jpg" alt="편정웅 프로필 사진" className="w-full h-full object-cover" />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {profileItems.map(({ icon: Icon, label, value, caption }) => (
+          <article
+            key={label}
+            className="rounded-lg border border-slate-200 bg-white p-5 text-left shadow-sm"
+          >
+            <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
+              <Icon size={18} aria-hidden="true" />
+              {label}
             </div>
-          </div>
-
-          {/* 정보 카드 */}
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-            <div className="card bg-base-100 border border-base-300 shadow-sm p-5 min-h-36">
-              <div className="font-bold flex items-center gap-2 text-base-content/90">
-                <User size={18} />이름
-              </div>
-              <div className="mt-6 text-base">편정웅</div>
-            </div>
-
-            <div className="card bg-base-100 border border-base-300 shadow-sm p-5 min-h-36">
-              <div className="font-bold flex items-center gap-2 text-base-content/90">
-                <Calendar size={18} />생년월일
-              </div>
-              <div className="mt-6 text-base">1999. 04. 13</div>
-            </div>
-
-            <div className="card bg-base-100 border border-base-300 shadow-sm p-5 min-h-36 sm:col-span-2 xl:col-span-1">
-              <div className="font-bold flex items-center gap-2 text-base-content/90">
-                <GraduationCap size={18} />학력
-              </div>
-              <div className="mt-6 text-sm leading-relaxed">
-                성균관대학교
-                <br />
-                데이터사이언스 학사
-                <div className="text-xs text-base-content/60 mt-1">2018.3 ~ 2024.2</div>
-              </div>
-            </div>
-
-            <div className="card bg-base-100 border border-base-300 shadow-sm p-5 min-h-36">
-              <div className="font-bold flex items-center gap-2 text-base-content/90">
-                <BookOpen size={18} />교육사항
-              </div>
-              <div className="mt-6 text-sm leading-relaxed">
-                삼성청년SW아카데미 12기 수료
-                <div className="text-xs text-base-content/60 mt-1">2024.1 ~ 2024.6</div>
-              </div>
-            </div>
-
-            <div className="card bg-base-100 border border-base-300 shadow-sm p-5 min-h-36">
-              <div className="font-bold flex items-center gap-2 text-base-content/90">
-                <MapPin size={18} />위치
-              </div>
-              <div className="mt-6 text-sm leading-relaxed">
-                서울특별시 광진구
-                <br />
-                충청남도 아산시
-              </div>
-            </div>
-
-            <div className="card bg-base-100 border border-base-300 shadow-sm p-5 min-h-36">
-              <div className="font-bold flex items-center gap-2 text-base-content/90">
-                <Mail size={18} />Contact
-              </div>
-              <div className="mt-6 text-sm break-all">like5518@gmail.com</div>
-            </div>
-          </div>
-        </div>
+            <p className="mt-5 text-base font-bold leading-7 text-slate-900">
+              {value}
+            </p>
+            {caption && (
+              <p className="mt-2 text-sm leading-6 text-slate-500">{caption}</p>
+            )}
+          </article>
+        ))}
       </div>
     </section>
   );

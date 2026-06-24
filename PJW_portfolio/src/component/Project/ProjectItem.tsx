@@ -3,13 +3,22 @@ import React, { useState } from "react";
 export interface ProjectItemProps {
   title: string;
   description: string;
-  thumbnail?: string; // 이미지 경로
-  stacks?: string[]; // 사용 기술
-  link?: string; // 배포/깃허브 등 외부 링크
+  thumbnail?: string;
+  stacks?: string[];
+  techStack?: string[];
+  link?: string;
 }
 
-const ProjectItem: React.FC<ProjectItemProps> = ({ title, description, thumbnail, stacks, link }) => {
+const ProjectItem: React.FC<ProjectItemProps> = ({
+  title,
+  description,
+  thumbnail,
+  stacks,
+  techStack,
+  link,
+}) => {
   const [open, setOpen] = useState(false);
+  const stackItems = stacks ?? techStack ?? [];
 
   const handleClick = () => {
     if (link) {
@@ -24,24 +33,30 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ title, description, thumbnail
   return (
     <>
       <div
-        className="relative group w-full md:w-96 h-64 overflow-hidden rounded-sm shadow-md bg-base-100 cursor-pointer"
+        className="group relative h-64 w-full max-w-sm cursor-pointer overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
         onClick={handleClick}
       >
         {thumbnail && (
           <img
             src={thumbnail}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="h-full w-full object-contain p-6 transition-transform duration-500 group-hover:scale-105"
           />
         )}
-        {/* 오버레이 */}
-        <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-6">
-          <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg text-center">{title}</h3>
-          <p className="text-base text-gray-200 text-center mb-2">{description}</p>
-          {stacks && stacks.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-2 justify-center">
-              {stacks.map((stack) => (
-                <span key={stack} className="badge badge-outline text-xs px-2 py-1 text-white border-white">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/75 p-6 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+          <h3 className="mb-2 text-center text-2xl font-bold text-white drop-shadow-lg">
+            {title}
+          </h3>
+          <p className="mb-3 text-center text-base text-gray-200">
+            {description}
+          </p>
+          {stackItems.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-2">
+              {stackItems.map((stack) => (
+                <span
+                  key={stack}
+                  className="badge badge-outline border-white px-2 py-1 text-xs text-white"
+                >
                   {stack}
                 </span>
               ))}
@@ -49,29 +64,31 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ title, description, thumbnail
           )}
         </div>
       </div>
-      
-      {/* daisyUI 모달 */}
-      <div className={`modal ${open ? 'modal-open' : ''}`} onClick={handleClose}>
-        <div className="modal-box w-11/12 max-w-5xl h-5/6" onClick={e => e.stopPropagation()}>
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-bold text-lg">{title}</h3>
-            <button 
-              className="btn btn-sm btn-circle btn-ghost"
+
+      <div className={`modal ${open ? "modal-open" : ""}`} onClick={handleClose}>
+        <div
+          className="modal-box h-5/6 w-11/12 max-w-5xl"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="text-lg font-bold">{title}</h3>
+            <button
+              className="btn btn-circle btn-ghost btn-sm"
               onClick={handleClose}
+              aria-label="Close project preview"
             >
-              ✕
+              X
             </button>
           </div>
           {link && (
             <iframe
               src={link}
               title={title}
-              className="w-full h-full rounded"
+              className="h-full w-full rounded"
               allowFullScreen
             />
           )}
         </div>
-
       </div>
     </>
   );
